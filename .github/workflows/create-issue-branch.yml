@@ -1,0 +1,62 @@
+name: create issue branch
+
+on:
+  issues:
+    types: [opened, assigned]
+
+jobs:
+  create-issue-branch:
+    name: "create issue branch"
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: create the issue branch
+        uses: robvanderleek/create-issue-branch@main
+        id: create-issue-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: choose a pr template
+        if: steps.create-issue-branch.outputs.branchName != ''
+        id: template
+        env:
+          BRANCH_NAME: ${{ steps.create-issue-branch.outputs.branchName }}
+        run: |
+          branch=$BRANCH_NAME
+          if [[ $branch =~ ^fix/ ]]; then \
+            template="버그-이슈-템플릿.md"; \
+          elif [[ $branch =~ ^feature/ ]]; then \
+            template="기능-추가-이슈-템플릿.md"; \
+          elif [[ $branch =~ ^refactor/ ]]; then \
+            template="리팩토링-템플릿.md"; \
+          elif [[ $branch =~ ^document/ ]]; then \
+            template="문서-작성-템플릿.md"; \
+          fi
+          echo "::set-output name=template-name::$template"
+
+      - name: add git command in comment
+        uses: mshick/add-pr-comment@v2
+        if: steps.create-issue-branch.outputs.branchName != ''
+        with:
+          message-id: git-command-comment
+          message: |
+            ### copy git command below
+            ```
+              git fetch origin
+              git checkout ${{ steps.create-issue-branch.outputs.branchName }}
+            ```
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: add pr link in comment
+        uses: mshick/add-pr-comment@v2
+        if: steps.create-issue-branch.outputs.branchName != ''
+        env:
+          PULL_REQUEST_URL: ${{ format('https://github.com/{0}/compare/{1}...{2}?quick_pull=1&template={3}', github.repository, github.event.repository.default_branch, steps.create-issue-branch.outputs.branchName, steps.template.outputs.template-name) }}
+          TEMPLATE: ${{ steps.template.outputs.template-name }}
+        with:
+          message-id: pr-link-comment
+          message: |
+            ## Pull Request ![](https://raw.githubusercontent.com/primer/octicons/master/icons/git-pull-request-16.svg)
+
+            [PR 작성하기](${{ env.PULL_REQUEST_URL }}) `${{ env.TEMPLATE }}` 템플릿으로 작성하시면 됩니다 :)
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
