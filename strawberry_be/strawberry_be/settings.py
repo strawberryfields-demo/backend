@@ -50,6 +50,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_swagger',
+
+    # app
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -157,3 +160,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 
 }
+
+# auth 관련 기본 model 설정
+AUTH_USER_MODEL = 'api.User'
