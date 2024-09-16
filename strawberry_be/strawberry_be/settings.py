@@ -124,3 +124,22 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# DRF 구성 옵션
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [ # API 응답이 어떤 형식으로 직렬화될지 결정
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [ # API 뷰에 적용되는 인증 메커니즘 정의
+        #'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [ # API 뷰에 적용되는 접근 제어 규칙을 결정
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    # 기본 페이지네이션 클래스
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+
+}
