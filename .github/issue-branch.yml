@@ -1,0 +1,17 @@
+mode: immediate
+defaultBranch: develop
+branchName: "issue-${issue.number}"
+autoLinkIssue: true
+autoCloseIssue: true
+gitSafeReplacementChar: "-"
+branches:
+  - label: 🖥️feature
+    prefix: feature/
+  - label: 🐛bug
+    prefix: fix/
+  - label: 🛠️refactor
+    prefix: refactor/
+  - label: 📖documentation
+    prefix: document/
+  - label : '*'
+    prefix: feature/
