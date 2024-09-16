@@ -1,6 +1,6 @@
 from django.db import models
 
-from strawberry_be.strawberry_be.models.user import User
+from .user import User
 
 
 class Music(models.Model):

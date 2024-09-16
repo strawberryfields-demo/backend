@@ -1,7 +1,7 @@
 from django.db import models
 
-from strawberry_be.strawberry_be.models.music import Music
-from strawberry_be.strawberry_be.models.user import User
+from .music import Music
+from .user import User
 
 
 class Pitch(models.Model):
