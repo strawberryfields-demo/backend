@@ -5,7 +5,7 @@ from .user import User
 
 class Music(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
