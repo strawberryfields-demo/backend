@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
+    # model 관련 library
+    "phonenumber_field",  # 전화번호 관련
     # app
     'api',
 ]
