@@ -29,7 +29,7 @@ class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     email = models.EmailField(max_length=255, unique=True)
-    username = models.EmailField(
+    username = models.CharField(
         max_length=25,
     )
     phone = PhoneNumberField(blank=True)
