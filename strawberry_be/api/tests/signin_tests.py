@@ -44,6 +44,8 @@ from rest_framework.reverse import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from rest_framework_simplejwt.tokens import AccessToken
+
 
 class UserViewTests(APITestCase):
     def setUp(self):
@@ -69,9 +71,14 @@ class UserViewTests(APITestCase):
         }
 
         response = self.client.post(url, data, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["email"], data["email"])
+
+        access_token = response.data["access_token"]
+        valid_token = AccessToken(access_token)
+        user_id = valid_token["user_id"]
+        user = self.User.objects.get(id=user_id)
+
+        self.assertEqual(data["email"], user.email)
 
     # 로그인 실패
     def test_signin_api_fail(self):
