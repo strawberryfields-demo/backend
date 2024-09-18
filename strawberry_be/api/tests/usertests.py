@@ -37,6 +37,18 @@ class UserManagerTests(TestCase):
         )
         self.assertNotEqual("password123", user.password)
 
+    def test_find_user_with_email(self):
+        user = self.User.objects.create_user(
+            email="test@example.com",
+            username="testuser",
+            phone="+821012345678",
+            password="password123",
+            user_type="Composer",
+        )
+        find_user = self.User.objects.find_user_with_email(user.email)
+
+        self.assertEqual(user, find_user)
+
 
 class UserSerializerTest(TestCase):
 
