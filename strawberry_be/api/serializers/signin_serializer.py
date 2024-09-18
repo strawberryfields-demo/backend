@@ -5,6 +5,8 @@ from django.core.validators import EmailValidator
 
 from rest_framework import serializers
 
+from rest_framework_simplejwt.tokens import AccessToken
+
 from .error import SIGNIN_SERIALIZE_ERRORS
 
 
@@ -41,5 +43,7 @@ class SigninSerializer(serializers.Serializer):
                 SIGNIN_SERIALIZE_ERRORS["password"]["match"]
             )
 
+        access_token = str(AccessToken.for_user(user))
+
         # 유효성 검사가 성공하면 user 객체를 반환
-        return {"user": user}
+        return {"user": user, "access_token": access_token}
