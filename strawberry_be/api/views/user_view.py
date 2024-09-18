@@ -30,6 +30,5 @@ class UserView(viewsets.ViewSet):
     def sign_in(self, request):
         signin_serializer = SigninSerializer(data=request.data)
         if signin_serializer.is_valid(raise_exception=True):
-            user = signin_serializer.validated_data.get("user")
-            user_serializer = UserSerializer(user)
-            return Response(user_serializer.data, status=status.HTTP_200_OK)
+            access_token = signin_serializer.validated_data.get("access_token")
+            return Response({"access_token": access_token}, status=status.HTTP_200_OK)
