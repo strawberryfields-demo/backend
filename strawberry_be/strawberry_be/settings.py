@@ -152,7 +152,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ # API 뷰에 적용되는 인증 메커니즘 정의
         #'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     'DEFAULT_PERMISSION_CLASSES': [ # API 뷰에 적용되는 접근 제어 규칙을 결정
         'rest_framework.permissions.IsAuthenticated',
