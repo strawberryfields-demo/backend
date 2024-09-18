@@ -101,3 +101,44 @@ class UserSerializerTest(TestCase):
         self.assertTrue(user.check_password(data["password"]))
         self.assertEqual(user.user_type, data["user_type"])
 
+
+from rest_framework.reverse import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+
+class UserViewTests(APITestCase):
+    # 회원가입 성공 API 테스트
+    def test_sign_up_success(self):
+
+        url = reverse("user-sign-up")
+
+        data = {
+            "username": "testuser",
+            "phone": "+821012345678",
+            "password": "testpassword123",
+            "email": "testuser@example.com",
+            "user_type": "Composer",
+        }
+
+        response = self.client.post(url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(response.data["username"], data["username"])
+        self.assertEqual(response.data["email"], data["email"])
+
+    # 회원가입 실패
+    def test_sign_up_fail(self):
+
+        url = reverse("user-sign-up")
+
+        data = {
+            "username": "testuser",
+            "phone": "+821012345678",
+            "password": "testpassword123",
+            "email": "testuser@example.com",
+        }
+
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
