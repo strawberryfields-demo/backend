@@ -21,6 +21,10 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
+    def find_user_with_email(self, email):
+        user = self.get(email=email)
+        return user
+
 
 class User(AbstractBaseUser):
     objects = UserManager()
