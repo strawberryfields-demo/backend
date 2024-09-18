@@ -9,3 +9,8 @@ USER_SERIALIZE_ERRORS = {
     },
     "phone": {"required": {"전화번호": "전화번호를 입력해주세요."}},
 }
+
+SIGNIN_SERIALIZE_ERRORS = {
+    "email": {"not_found": {"이메일": "존재하지 않는 유저입니다"}},
+    "password": {"match": {"비밀번호": "일치하지 않는 비밀번호입니다."}},
+}
