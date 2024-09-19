@@ -51,11 +51,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
+    # CORS 관련
+    "corsheaders",
+    # model 관련 library
+    "phonenumber_field",  # 전화번호 관련
     # app
     'api',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -150,7 +155,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ # API 뷰에 적용되는 인증 메커니즘 정의
         #'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     'DEFAULT_PERMISSION_CLASSES': [ # API 뷰에 적용되는 접근 제어 규칙을 결정
         'rest_framework.permissions.IsAuthenticated',
@@ -163,3 +169,6 @@ REST_FRAMEWORK = {
 
 # auth 관련 기본 model 설정
 AUTH_USER_MODEL = 'api.User'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
