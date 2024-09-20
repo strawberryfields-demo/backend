@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 # 비밀번호 유효성 검사 함수
 from django.contrib.auth.password_validation import validate_password
 
-from django.core.validators import EmailValidator
-
 from rest_framework import serializers
 
 from .error import USER_SERIALIZE_ERRORS
@@ -27,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
             "user_type": {"write_only": True, "required": True},
         }
 
-    email = serializers.EmailField(required=True, validators=[EmailValidator()])
+    email = serializers.EmailField(required=True)
     # write_only: 데이터 입력 시에만 사용, 직렬화 출력에서 제외, 비밀번호 입력 시 사용, 응답에는 포함되지 않으므로 쉽게 노출 제어 가능
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password]

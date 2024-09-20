@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 
 # 이메일 유효성 검사 함수
-from django.core.validators import EmailValidator
 
 from rest_framework import serializers
 
@@ -16,9 +15,7 @@ User = get_user_model()
 
 class SigninSerializer(serializers.Serializer):
 
-    email = serializers.EmailField(
-        write_only=True, required=True, validators=[EmailValidator()]
-    )
+    email = serializers.EmailField(write_only=True, required=True)
     password = serializers.CharField(write_only=True, required=True)
     access_token = serializers.CharField(read_only=True)
 
