@@ -1,4 +1,3 @@
-from http import HTTPMethod
 import os
 import boto3
 import boto3.session
@@ -19,6 +18,6 @@ class S3:
         return self.client.generate_presigned_url(
             "put_object",
             Params={"Bucket": self.bucket_name, "Key": object_name},
-            HttpMethod=http_method
             ExpiresIn=expiration,
+            HttpMethod=http_method,
         )
