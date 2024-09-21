@@ -1,8 +1,8 @@
 import os
 from rest_framework import serializers
 
-from strawberry_be.api.serializers.error import S3_URL_SERIALIZE_ERRORS
-from strawberry_be.api.utils.aws import S3
+from api.serializers.error import S3_URL_SERIALIZE_ERRORS
+from api.utils.aws import S3
 
 
 class S3URLSerializer(serializers.Serializer):
@@ -28,7 +28,7 @@ class S3URLSerializer(serializers.Serializer):
         for music_metadata in music_metadatas:
             s3_urls.append(
                 s3.generate_presigned_url(
-                    object_name=f"{music_metadata["name"]}.{music_metadata["extension"]}",
+                    object_name=f"{music_metadata['name']}.{music_metadata['extension']}",
                 )
             )
 
