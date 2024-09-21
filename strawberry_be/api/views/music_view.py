@@ -24,7 +24,7 @@ class MusicView(viewsets.ViewSet):
         queryset = Music.objects.filter(user=request.user).all()
         paginator = PageNumberPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
-        serializer = MusicSerializer(paginated_queryset, many=True)
+        serializer = MusicSerializer(paginated_queryset, many=True, user=request.user)
         return paginator.get_paginated_response(serializer.data)
 
     @action(
