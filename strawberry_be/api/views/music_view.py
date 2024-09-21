@@ -13,7 +13,10 @@ class MusicView(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     @action(
-        detail=False, methods=["GET"], url_path="list", permission_classes=[IsComposer]
+        detail=False,
+        methods=["GET"],
+        url_path="list",
+        permission_classes=[IsAuthenticated, IsComposer],
     )
     def list_music(self, request, username):
 
@@ -26,10 +29,11 @@ class MusicView(viewsets.ViewSet):
         methods=["POST"],
         url_path="upload",
         url_name="upload",
-        permission_classes=[IsComposer],
+        permission_classes=[IsAuthenticated, IsComposer],
     )
     def upload_music(self, request):
-        serializer = S3URLSerializer(data=request.data)
+        serializer = S3URLSerializer(data=request.data, user=request.user)
         serializer.is_valid(raise_exception=True)
+
         s3_urls = serializer.validated_data["s3_urls"]
         return Response({"s3_urls": s3_urls}, status=status.HTTP_200_OK)
