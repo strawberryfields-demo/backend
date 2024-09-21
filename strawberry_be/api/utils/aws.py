@@ -16,3 +16,10 @@ class S3:
         return self.client.generate_presigned_post(
             self.bucket_name, object_name, ExpiresIn=expiration
         )
+
+    def geterate_presigned_url(self, object_name, expiration=1000):
+        return self.client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": self.bucket_name, "Key": object_name},
+            ExpiresIn=expiration,
+        )

@@ -14,7 +14,7 @@ class Music(models.Model):
     title = models.CharField(max_length=200)
     composer = models.CharField(max_length=100)
     genre = models.CharField(max_length=50)
-    duration = models.IntegerField(help_text="Duration in seconds")
+    duration = models.IntegerField(help_text="Duration in seconds", null=True)
     file_path = models.URLField(max_length=500)
     file_type = models.CharField(max_length=5, choices=[("mp3", "MP3"), ("wav", "WAV")])
     upload_date = models.DateTimeField(auto_now_add=True)
