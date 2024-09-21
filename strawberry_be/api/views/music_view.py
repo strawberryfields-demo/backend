@@ -2,6 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
+
 
 from api.models.music import Music
 from api.serializers import MusicSerializer
@@ -18,11 +20,12 @@ class MusicView(viewsets.ViewSet):
         url_path="list",
         permission_classes=[IsAuthenticated, IsComposer],
     )
-    def list_music(self, request, username):
-
-        queryset = Music.objects.filter(username__username=username)
-        serializer = MusicSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def list_music(self, request):
+        queryset = Music.objects.filter(user=request.user).all()
+        paginator = PageNumberPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = MusicSerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     @action(
         detail=False,
