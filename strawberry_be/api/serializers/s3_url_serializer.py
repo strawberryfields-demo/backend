@@ -9,7 +9,7 @@ class S3URLSerializer(serializers.Serializer):
     music_metadatas = serializers.ListField(
         # DictField에 대한 구체적 확장 필요
         write_only=True,
-        child=serializers.DictField(),
+        child=serializers.DictField(child=serializers.CharField()),
     )
     s3_urls = serializers.ListField(read_only=True, child=serializers.CharField())
 
