@@ -1,8 +1,11 @@
 import os
+import uuid
 from rest_framework import serializers
 
 from api.serializers.error import S3_URL_SERIALIZE_ERRORS
 from api.utils.aws import S3
+from api.models import user
+from api.models.music import Music
 
 
 class S3URLSerializer(serializers.Serializer):
@@ -31,13 +34,31 @@ class S3URLSerializer(serializers.Serializer):
                 )
 
         s3_urls = []
+        music_objects = []
 
         s3 = S3(os.environ.get("AWS_BUCKET_NAME"))
         for music_metadata in music_metadatas:
+            original_filename = f"{music_metadata['name']}"
+            file_uuid = uuid.uuid4()
+            file_extension = f".{music_metadata['extension']}"
+
+            object_name = f"{self.user.id}/{file_uuid}.{music_metadata['extension']}"
             s3_urls.append(
-                s3.generate_presigned_url(
-                    object_name=f"{self.user.id}/{music_metadata['name']}.{music_metadata['extension']}",
+                s3.generate_presigned_post(
+                    object_name=object_name,
                 )
             )
 
+            music = Music(
+                user=self.user,
+                file_uuid=file_uuid,
+                title=music_metadata["name"],
+                file_path=f"https://{s3.bucket_name}.s3.{s3.location}.amazonaws.com/{object_name}",
+                file_type=music_metadata["extension"],
+                status="uploaded",
+            )
+
+            music_objects.append(music)
+
+        Music.objects.bulk_create(music_objects)
         return {"s3_urls": s3_urls}

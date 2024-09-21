@@ -1,17 +1,20 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
 
 from api.serializers.signin_serializer import SigninSerializer
 from api.serializers.user_serializer import UserSerializer
 
+from rest_framework.permissions import AllowAny
+
 
 class UserView(viewsets.ViewSet):
+
     @action(
         detail=False,
         methods=["POST"],
         url_path="sign-up",
+        authentication_classes=[],
         permission_classes=[AllowAny],
     )
     def sign_up(self, request):
@@ -25,6 +28,7 @@ class UserView(viewsets.ViewSet):
         detail=False,
         methods=["POST"],
         url_path="sign-in",
+        authentication_classes=[],
         permission_classes=[AllowAny],
     )
     def sign_in(self, request):

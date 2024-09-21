@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 
 from .user import User
@@ -5,6 +6,7 @@ from .user import User
 
 class Music(models.Model):
     id = models.AutoField(primary_key=True)
+    file_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
