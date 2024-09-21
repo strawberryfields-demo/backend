@@ -21,6 +21,10 @@ class S3URLSerializer(serializers.Serializer):
         music_metadatas = attrs.get("music_metadatas")
 
         for music_metadata in music_metadatas:
+            if music_metadata.get("extension") not in ["mp3", "wav"]:
+                raise serializers.ValidationError(
+                    S3_URL_SERIALIZE_ERRORS["file"]["invalid_extension"]
+                )
             if not music_metadata.get("size"):
                 raise serializers.ValidationError(
                     S3_URL_SERIALIZE_ERRORS["file"]["over_size"]

@@ -17,5 +17,6 @@ S3_URL_SERIALIZE_ERRORS = {
     "file": {
         "required": {"file": "파일을 첨부해주세요."},
         "over_size": {"file": "각 파일 크기는 10MB 이하여야 합니다."},
+        "invalid_extension": {"file": "유효하지 않은 파일 확장자입니다."},
     }
 }
