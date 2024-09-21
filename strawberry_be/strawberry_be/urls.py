@@ -18,8 +18,10 @@ Including another URLconf
 from rest_framework import routers
 
 from api.views.user_view import UserView
+from api.views.music_view import MusicListView
 
 router = routers.SimpleRouter()
 router.register(r"user", UserView, basename="user")
+router.register(r"music", MusicListView, basename="music")
 
 urlpatterns = router.urls
