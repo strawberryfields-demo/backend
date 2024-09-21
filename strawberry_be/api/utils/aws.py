@@ -8,6 +8,9 @@ class S3:
         self.bucket_name = bucket_name
         # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#client
         self.client = boto3.client("s3")
+        self.location = self.client.get_bucket_location(Bucket=bucket_name)[
+            "LocationConstraint"
+        ]
 
     def generate_presigned_post(self, object_name, expiration=1000):
         return self.client.generate_presigned_post(
