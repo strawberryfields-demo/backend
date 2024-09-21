@@ -13,6 +13,10 @@ class S3URLSerializer(serializers.Serializer):
     )
     s3_urls = serializers.ListField(read_only=True, child=serializers.CharField())
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
     def validate(self, attrs):
         music_metadatas = attrs.get("music_metadatas")
 
@@ -28,7 +32,7 @@ class S3URLSerializer(serializers.Serializer):
         for music_metadata in music_metadatas:
             s3_urls.append(
                 s3.generate_presigned_url(
-                    object_name=f"{music_metadata['name']}.{music_metadata['extension']}",
+                    object_name=f"{self.user.id}/{music_metadata['name']}.{music_metadata['extension']}",
                 )
             )
 
