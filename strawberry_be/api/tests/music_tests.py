@@ -37,7 +37,6 @@ class MusicViewTests(APITestCase):
         response = self.client.post(login_url, user_data, format="json")
         # token 얻기
         acess_token = response.data["access_token"]
-        print(acess_token)
 
         music_metadatas = {
             "music_metadatas": [
