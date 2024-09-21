@@ -35,7 +35,7 @@ class S3URLSerializer(serializers.Serializer):
         s3 = S3(os.environ.get("AWS_BUCKET_NAME"))
         for music_metadata in music_metadatas:
             s3_urls.append(
-                s3.generate_presigned_url(
+                s3.generate_presigned_post(
                     object_name=f"{self.user.id}/{music_metadata['name']}.{music_metadata['extension']}",
                 )
             )
